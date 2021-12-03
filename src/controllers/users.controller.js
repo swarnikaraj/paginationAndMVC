@@ -2,15 +2,31 @@
 const express=require("express")
 const User=require('../models/users.model')
 const router=express.Router();
+const transporter=require("../configs/nodemailer")
+
+const sendMail=require("../utils/send-mail")
 
 
-
-
+///register api
 
 router.post("/",async(req,res)=>{
 
     try{
+
+
+     
+
         const users= await User.create(req.body)
+     
+        sendMail(
+         "swarnikarajsingh@gmail.com",
+         `${req.body.email}`,
+         `Welcome to ABC system ${req.body.first_name}  ${req.body.last_name}`,
+         `Hi ${req.body.first_name}, Please confirm your email address `,
+
+         "<h1>Welcome to ABC system </h1>",
+        )
+
          return res.status(201).json(users)
         }
  
@@ -21,13 +37,19 @@ router.post("/",async(req,res)=>{
 })
 
 
-
+// get all users in paginated way
 
 router.get("/",async(req,res)=>{
 
       try{
-       const users= await User.find().lean().exec()
-        return res.send(users)
+        const page=+req.query.page || 1;
+        const size=+req.query.size || 2;
+
+        const skip=(page-1)*size
+        const users= await User.find().skip(skip).limit(size).lean().exec()
+    totalPages= Math.ceil(await User.find().countDocuments()/size)
+
+        return res.status(201).json({users,totalPages})
        }
 
      catch(e){

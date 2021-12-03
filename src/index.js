@@ -10,7 +10,7 @@ const userController=require("./controllers/users.controller")
 
 app.use(express.json())
 
-app.use("/register",userController)
+app.use("/users",userController)
 
 
 
