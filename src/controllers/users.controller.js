@@ -17,6 +17,16 @@ router.post("/",async(req,res)=>{
      
 
         const users= await User.create(req.body)
+
+        var mailList=[
+          "admin1@gmail.com",
+          "admin2@gmail.com",
+          "admin3@gmail.com",
+          "admin4@gmail.com",
+          "admin5@gmail.com",
+       
+        ]
+
      
         sendMail(
          "swarnikarajsingh@gmail.com",
@@ -26,6 +36,20 @@ router.post("/",async(req,res)=>{
 
          "<h1>Welcome to ABC system </h1>",
         )
+
+        
+          sendMail(
+            "swarnikarajsingh@gmail.com",
+             mailList,
+            `${req.body.first_name}  ${req.body.last_name} has registered with us`,
+
+            `Please Welcome ${req.body.first_name}`,
+
+            "<h1>Welcome to ABC system </h1>",
+          )
+
+         
+        
 
          return res.status(201).json(users)
         }

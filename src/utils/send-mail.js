@@ -2,12 +2,13 @@ const transporter=require("../configs/nodemailer")
 
 
    
-
+ 
    
 
 
 
-   module.exports=(from, to ,subject ,text,html)=>{
+   module.exports=(from,to ,subject ,text,html)=>{
+    
 
 
       const message = {
@@ -20,5 +21,7 @@ const transporter=require("../configs/nodemailer")
 
      transporter.sendMail(message)
 
+
+  
 
     }
